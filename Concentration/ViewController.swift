@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     
     var flipCount = 0 {
         didSet {
-            flipsCountLabel.text = "Flips:\(flipCount)"
+            flipsCountLabel.text = "Flips: \(flipCount)"
         }
     }
 
@@ -30,6 +30,11 @@ class ViewController: UIViewController {
         } else {
             print("chosen card was not in cardButtons")
         }
+    }
+    
+    @IBAction func newGameAction(_ sender: UIButton) {
+        game = Concentration(numberOfPairsOfCards: (carButtons.count + 1) / 2)
+        updateViewFromModel()
     }
     
     // MARK: - LifeCycle
