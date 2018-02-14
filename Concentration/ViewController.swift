@@ -16,19 +16,20 @@ class ViewController: UIViewController {
             flipsCountLabel.text = "Flips:\(flipCount)"
         }
     }
-    var emojiChoices = ["🎃","👻","🎃","👻"]
 
+    // MARK: - IBOutlet
     @IBOutlet weak var flipsCountLabel: UILabel!
     @IBOutlet var carButtons: [UIButton]!
     
+    // MARK: - IBAction
     @IBAction func touchCard(_ sender: UIButton) {
         flipCount += 1
         if let cardNumber = carButtons.index(of: sender) {
             game.chooseCard(at: cardNumber)
+            updateViewFromModel()
         } else {
             print("chosen card was not in cardButtons")
         }
-//        flipCard(withEmoji: "👻", on: sender)
     }
 //    func flipCard(withEmoji emoji: String, on button: UIButton) {
 //        if button.currentTitle == emoji {
@@ -39,6 +40,11 @@ class ViewController: UIViewController {
 //            button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
 //        }
 //    }
+    
+    // MARK: - LifeCycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
     
     //update View from Model
     func updateViewFromModel() {
@@ -54,18 +60,18 @@ class ViewController: UIViewController {
             }
         }
     }
+    
+    var emojiChoices = ["🎃","👻","🐼","🐧","🐾","🐊","🕷","🦉","🦇"]
+    var emoji = [Int : String]()
+    
     func emoji(for card: Card) -> String {
-        return "?"
-    }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        if emoji[card.identifier] == nil, emojiChoices.count > 0 {
+            let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count)))
+            emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
+        }
+        return emoji[card.identifier] ?? "?"
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 
 
 }
