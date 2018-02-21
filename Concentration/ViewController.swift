@@ -34,13 +34,14 @@ class ViewController: UIViewController {
     
     @IBAction func newGameAction(_ sender: UIButton) {
         game = Concentration(numberOfPairsOfCards: (carButtons.count + 1) / 2)
+        emojiChoices = emojiNewGame //add new emoji
         updateViewFromModel()
     }
     
     // MARK: - LifeCycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//    }
     
     //update View from Model
     func updateViewFromModel() {
@@ -58,6 +59,7 @@ class ViewController: UIViewController {
     }
     
     var emojiChoices = ["🎃","👻","🐼","🐧","🐾","🐊","🕷","🦉","🦇"]
+    var emojiNewGame = ["🎃","👻","🐼","🐧","🐾","🐊","🕷","🦉","🦇"]
     var emoji = [Int : String]()
     
     func emoji(for card: Card) -> String {
@@ -67,8 +69,11 @@ class ViewController: UIViewController {
         }
         return emoji[card.identifier] ?? "?"
     }
-
-
-
+}
+// MARK: - LifeCycle
+extension ViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
 }
 
