@@ -19,7 +19,7 @@ class ViewController: UIViewController {
 
     // MARK: - IBOutlet
     @IBOutlet weak var flipsCountLabel: UILabel!
-    @IBOutlet var carButtons: [UIButton]!
+    @IBOutlet var carButtons: [UIButton]! // buttons array
     
     // MARK: - IBAction
     @IBAction func touchCard(_ sender: UIButton) {
@@ -62,6 +62,7 @@ class ViewController: UIViewController {
     var emojiNewGame = ["🎃","👻","🐼","🐧","🐾","🐊","🕷","🦉","🦇"]
     var emoji = [Int : String]()
     
+    // take a random emoji,delete it form array then return
     func emoji(for card: Card) -> String {
         if emoji[card.identifier] == nil, emojiChoices.count > 0 {
             let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count)))
