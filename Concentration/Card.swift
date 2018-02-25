@@ -13,8 +13,8 @@ struct Card {
     var isMatched = false
     var identifier: Int
     
-    static var identifierFactory = 0
-    static func getuniqueIdentifier() -> Int {
+    private static var identifierFactory = 0
+    private static func getuniqueIdentifier() -> Int {
         Card.identifierFactory += 1
         return Card.identifierFactory
     }

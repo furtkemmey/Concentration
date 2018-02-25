@@ -9,32 +9,47 @@
 import Foundation
 
 class Concentration {
-    var cards: Array<Card> = [Card]()
-    var indexOfOneAndOnlyFaceUpCard: Int?
-    
+    private(set) var cards: Array<Card> = [Card]()
+    private var indexOfTheOneAndOnlyFaceUpCard: Int? {
+        get {
+            var foundIndex: Int?
+            for index in cards.indices {
+                if cards[index].isFaceUP {
+                    if foundIndex == nil {
+                        foundIndex = index // get first one face up
+                    } else {
+                        return nil // found second card face up, return nil
+                    }
+                }
+            }
+            return foundIndex // only one card be found, return index
+        }
+        set {
+            for index in cards.indices {
+                cards[index].isFaceUP = (index == newValue)
+            }
+        }
+    }
     // check choosed card status
     func chooseCard(at index: Int) {// choosed card index
+        assert(cards.indices.contains(index), "Concentration.chooseCard(at: \(index)): chosen index not int the cards")
         if !cards[index].isMatched {// is not matched
             // one card face up, has value and not it self
-            if let matchIndex = indexOfOneAndOnlyFaceUpCard, matchIndex != index {
+            if let matchIndex = indexOfTheOneAndOnlyFaceUpCard, matchIndex != index {
                 //check if cards is match
                 if cards[matchIndex].identifier == cards[index].identifier {//check two cards are the same
                     cards[matchIndex].isMatched = true //set to matched
                     cards[index].isMatched = true
                 }
                 cards[index].isFaceUP = true
-                indexOfOneAndOnlyFaceUpCard = nil
             } else {
                 // either one cards or 2 cards are face up
-                for flipDownIndex in cards.indices {
-                    cards[flipDownIndex].isFaceUP = false
-                }
-                cards[index].isFaceUP = true
-                indexOfOneAndOnlyFaceUpCard = index
+                indexOfTheOneAndOnlyFaceUpCard = index
             }
         }// if !cards[index].isMatched
     }
     init(numberOfPairsOfCards: Int) {
+    assert(numberOfPairsOfCards > 0, "Concentration.init(at: \(numberOfPairsOfCards)): you must have at least one pair of cards")
 //        for _ in 1...numberOfPairsOfCards {
 //            let card = Card()
 //            cards += [card, card]
