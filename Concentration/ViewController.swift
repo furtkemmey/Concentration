@@ -61,8 +61,8 @@ class ViewController: UIViewController {
         }
     }
     
-    private var emojiChoices = ["🎃","👻","🐼","🐧","🐾","🐊","🕷","🦉","🦇"]
-    private var emojiNewGame = ["🎃","👻","🐼","🐧","🐾","🐊","🕷","🦉","🦇"]
+    private var emojiChoices: [String] = ["🎃","👻","🐼","🐧","🐾","🐊","🕷","🦉","🦇"]
+    private var emojiNewGame: [String] = ["🎃","👻","🐼","🐧","🐾","🐊","🕷","🦉","🦇"]
     private var emoji = [Int : String]()
     
     // take a random emoji,delete it form array then return
