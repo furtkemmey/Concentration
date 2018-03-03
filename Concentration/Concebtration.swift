@@ -8,21 +8,22 @@
 
 import Foundation
 
-class Concentration {
+struct Concentration {
     private(set) var cards: Array<Card> = [Card]()
     private var indexOfTheOneAndOnlyFaceUpCard: Int? {
         get {
-            var foundIndex: Int?
-            for index in cards.indices {
-                if cards[index].isFaceUP {
-                    if foundIndex == nil {
-                        foundIndex = index // get first one face up
-                    } else {
-                        return nil // found second card face up, return nil
-                    }
-                }
-            }
-            return foundIndex // only one card be found, return index
+            return cards.indices.filter { cards[$0].isFaceUP }.oneAndOnly
+//            var foundIndex: Int?
+//            for index in cards.indices {
+//                if cards[index].isFaceUP {
+//                    if foundIndex == nil {
+//                        foundIndex = index // get first one face up
+//                    } else {
+//                        return nil // found second card face up, return nil
+//                    }
+//                }
+//            }
+//            return foundIndex // only one card be found, return index
         }
         set {
             for index in cards.indices {
@@ -31,13 +32,13 @@ class Concentration {
         }
     }
     // check choosed card status
-    func chooseCard(at index: Int) {// choosed card index
+    mutating func chooseCard(at index: Int) {// choosed card index
         assert(cards.indices.contains(index), "Concentration.chooseCard(at: \(index)): chosen index not int the cards")
         if !cards[index].isMatched {// is not matched
             // one card face up, has value and not it self
             if let matchIndex = indexOfTheOneAndOnlyFaceUpCard, matchIndex != index {
                 //check if cards is match
-                if cards[matchIndex].identifier == cards[index].identifier {//check two cards are the same
+                if cards[matchIndex] == cards[index] {//check two cards are the same
                     cards[matchIndex].isMatched = true //set to matched
                     cards[index].isMatched = true
                 }
@@ -66,4 +67,9 @@ class Concentration {
         }
     }
     
+}
+extension Collection {
+    var oneAndOnly: Element? {
+        return count == 1 ? first : nil
+    }
 }

@@ -16,12 +16,24 @@ class ViewController: UIViewController {
     
     private(set) var flipCount = 0 {
         didSet {
-            flipsCountLabel.text = "Flips: \(flipCount)"
+            updateFlipCountLabel()
         }
+    }
+    func updateFlipCountLabel() {
+        let attributes: [NSAttributedStringKey:Any] = [
+            .strokeWidth : 5.0,
+            .strokeColor : UIColor.orange
+        ]
+        let attributedString = NSAttributedString(string: "Flips: \(flipCount)", attributes: attributes)
+        flipsCountLabel.attributedText = attributedString
     }
 
     // MARK: - IBOutlet
-    @IBOutlet private weak var flipsCountLabel: UILabel!
+    @IBOutlet private weak var flipsCountLabel: UILabel! {
+        didSet {
+            updateFlipCountLabel()
+        }
+    }
     @IBOutlet private var carButtons: [UIButton]! // buttons array
     
     // MARK: - IBAction
@@ -36,9 +48,9 @@ class ViewController: UIViewController {
     }
     
     @IBAction func newGameAction(_ sender: UIButton) {
-        game = Concentration(numberOfPairsOfCards: (carButtons.count + 1) / 2)
-        emojiChoices = emojiNewGame //add new emoji
-        updateViewFromModel()
+//        game = Concentration(numberOfPairsOfCards: (carButtons.count + 1) / 2)
+//        emojiChoices = emojiNewGame //add new emoji
+//        updateViewFromModel()
     }
     
     // MARK: - LifeCycle
@@ -61,16 +73,18 @@ class ViewController: UIViewController {
         }
     }
     
-    private var emojiChoices: [String] = ["🎃","👻","🐼","🐧","🐾","🐊","🕷","🦉","🦇"]
+//    private var emojiChoices: [String] = ["🎃","👻","🐼","🐧","🐾","🐊","🕷","🦉","🦇"]
+    private var emojiChoices = "🎃👻🐼🐧🐾🐊🕷🦉🦇"
     private var emojiNewGame: [String] = ["🎃","👻","🐼","🐧","🐾","🐊","🕷","🦉","🦇"]
-    private var emoji = [Int : String]()
+    private var emoji = [Card : String]()
     
     // take a random emoji,delete it form array then return
     private func emoji(for card: Card) -> String {
-        if emoji[card.identifier] == nil, emojiChoices.count > 0 {
-            emoji[card.identifier] = emojiChoices.remove(at: emojiChoices.count.arc4random)
+        if emoji[card] == nil, emojiChoices.count > 0 {
+            let randomStringIndex = emojiChoices.index(emojiChoices.startIndex, offsetBy: emojiChoices.count.arc4random)
+            emoji[card] = String(emojiChoices.remove(at: randomStringIndex))
         }
-        return emoji[card.identifier] ?? "?"// get emoji form dictionary
+        return emoji[card] ?? "?"// get emoji form dictionary
     }
 }
 // MARK: extension Int
@@ -85,6 +99,16 @@ extension Int { // get random number from zero to self
         }
     }
 }
+extension ViewController {
+    func printLog<T>(_ message: T, file: String = #file, method: String = #function, line: Int = #line){
+        #if DEBUG
+            debugPrint("Line:\(line) \(method)(): \(message)")
+        #else
+            print("Line:\(line) \(method)(): \(message)")
+        #endif
+    }
+}
+
 // MARK: - LifeCycle
 extension ViewController {
     override func viewDidLoad() {
